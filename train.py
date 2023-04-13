@@ -1,11 +1,10 @@
-import numpy as np
-from sklearn.linear_model import LinearRegression
+import sklearn
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
 
-# prepare training data
-X = np.array([[1, 1], [1, 2], [2, 2], [2, 3]])
-y = np.dot(X, np.array([1, 2])) + 3
+X, y = datasets.load_iris(return_X_y=True)
 
-# train a model
-model = LinearRegression()
+X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_state=1337)
 
-model.fit(X, y)
+knn = sklearn.neighbors.KNeighborsClassifier()
+knn.fit(X_train, Y_train)
