@@ -8,3 +8,5 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, y, test_size=0.2, random_
 
 knn = sklearn.neighbors.KNeighborsClassifier(n_neighbors=5)
 knn.fit(X_train, Y_train)
+
+knn.score(X_test, y_test)
