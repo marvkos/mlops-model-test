@@ -56,11 +56,11 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss = F.nll_loss(output, target)
         loss.backward()
         optimizer.step()
-        if batch_idx % args.log_interval == 0:
+        if batch_idx % args["log_interval"] == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 epoch, batch_idx * len(data), len(train_loader.dataset),
                 100. * batch_idx / len(train_loader), loss.item()))
-            if args.dry_run:
+            if args["dry_run"]:
                 break
 
 
@@ -99,10 +99,10 @@ def main():
         "save_model": False
     }
     
-    use_cuda = not args.no_cuda and torch.cuda.is_available()
-    use_mps = not args.no_mps and torch.backends.mps.is_available()
+    use_cuda = not args["no_cuda"] and torch.cuda.is_available()
+    use_mps = not args["no_mps"] and torch.backends.mps.is_available()
 
-    torch.manual_seed(args.seed)
+    torch.manual_seed(args["seed"])
 
     if use_cuda:
         device = torch.device("cuda")
@@ -111,8 +111,8 @@ def main():
     else:
         device = torch.device("cpu")
 
-    train_kwargs = {'batch_size': args.batch_size}
-    test_kwargs = {'batch_size': args.test_batch_size}
+    train_kwargs = {'batch_size': args["batch_size"]}
+    test_kwargs = {'batch_size': args["test_batch_size"]}
     if use_cuda:
         cuda_kwargs = {'num_workers': 1,
                        'pin_memory': True,
@@ -134,13 +134,13 @@ def main():
     model = Net().to(device)
     optimizer = optim.Adadelta(model.parameters(), lr=args.lr)
 
-    scheduler = StepLR(optimizer, step_size=1, gamma=args.gamma)
-    for epoch in range(1, args.epochs + 1):
+    scheduler = StepLR(optimizer, step_size=1, gamma=args["gamma"])
+    for epoch in range(1, args["epochs"] + 1):
         train(args, model, device, train_loader, optimizer, epoch)
         test(model, device, test_loader)
         scheduler.step()
 
-    if args.save_model:
+    if args["save_model"]:
         torch.save(model.state_dict(), "mnist_cnn.pt")
 
 
