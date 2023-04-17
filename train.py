@@ -95,7 +95,7 @@ def main():
         "no_mps": False,
         "dry_run": False,
         "seed": 1,
-        "log_interval": 1,
+        "log_interval": 10,
         "save_model": False
     }
     
