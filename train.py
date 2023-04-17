@@ -13,7 +13,7 @@
 
 #knn.score(X_test, y_test)
 
-import argparse
+from argparse import ArgumentParser
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -86,7 +86,7 @@ def test(model, device, test_loader):
 
 def main():
     # Training settings
-    parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
+    parser = ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                         help='input batch size for training (default: 64)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
