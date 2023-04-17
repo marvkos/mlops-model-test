@@ -88,14 +88,14 @@ def main():
     args = {
         "batch_size": 16,
         "test_batch_size": 16,
-        "epochs": 14,
+        "epochs": 1,
         "lr": 1.0,
         "gamma": 0.7,
         "no_cuda": False,
         "no_mps": False,
         "dry_run": False,
         "seed": 1,
-        "log_interval": 10,
+        "log_interval": 1,
         "save_model": False
     }
     
