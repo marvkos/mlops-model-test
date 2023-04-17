@@ -86,17 +86,17 @@ def test(model, device, test_loader):
 def main():
     # Training settings
     args = {
-        "batch-size": 16,
-        "test-batch-size": 16,
+        "batch_size": 16,
+        "test_batch_size": 16,
         "epochs": 14,
         "lr": 1.0,
         "gamma": 0.7,
-        "no-cuda": False,
-        "no-mps": False,
-        "dry-run": False,
+        "no_cuda": False,
+        "no_mps": False,
+        "dry_run": False,
         "seed": 1,
-        "log-interval": 10,
-        "save-model": False
+        "log_interval": 10,
+        "save_model": False
     }
     
     use_cuda = not args.no_cuda and torch.cuda.is_available()
