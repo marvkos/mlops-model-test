@@ -18,6 +18,7 @@ import os
 import pytorch_lightning as pl
 import torch
 import torchmetrics
+from torch import nn
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
 from torchvision import transforms
@@ -31,17 +32,41 @@ from torchvision.datasets import MNIST
 class MNISTModel(pl.LightningModule):
     def __init__(self):
         super().__init__()
-        self.l1 = torch.nn.Linear(28 * 28, 10)
-        self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=10)
+
+        # Hardcode some dataset specific attributes
+        self.num_classes = 10
+        self.dims = (1, 28, 28)
+        channels, width, height = self.dims
+        self.transform = transforms.Compose(
+            [
+                transforms.ToTensor(),
+                transforms.Normalize((0.1307,), (0.3081,)),
+            ]
+        )
+
+        # Define PyTorch model
+        self.model = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(channels * width * height, 64),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(hidden_size, 64),
+            nn.ReLU(),
+            nn.Dropout(0.1),
+            nn.Linear(64, self.num_classes),
+        )
+        
+        self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=self.num_classes)
 
     def forward(self, x):
-        return torch.relu(self.l1(x.view(x.size(0), -1)))
+        x = self.model(x)
+        return F.log_softmax(x, dim=1)
 
     def training_step(self, batch, batch_nb):
         x, y = batch
         logits = self(x)
-        loss = F.cross_entropy(logits, y)
-        pred = logits.argmax(dim=1)
+        loss = F.nll_loss(logits, y)
+        pred = torch.argmax(logits, dim=1)
         acc = self.accuracy(pred, y)
 
         # Use the current of PyTorch logger
