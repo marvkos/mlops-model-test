@@ -17,6 +17,7 @@ import os
 
 import pytorch_lightning as pl
 import torch
+import torchmetrics
 from torch.nn import functional as F
 from torch.utils.data import DataLoader
 from torchvision import transforms
