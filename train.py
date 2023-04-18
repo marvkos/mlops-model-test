@@ -67,7 +67,7 @@ train_ds = MNIST(
 train_loader = DataLoader(train_ds, batch_size=32)
 
 # Initialize a trainer
-trainer = pl.Trainer(max_epochs=2, progress_bar_refresh_rate=20)
+trainer = pl.Trainer(max_epochs=2)
 
 # Train the model
 trainer.fit(mnist_model, train_loader)
