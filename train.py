@@ -50,7 +50,7 @@ class MNISTModel(pl.LightningModule):
             nn.Linear(channels * width * height, 64),
             nn.ReLU(),
             nn.Dropout(0.1),
-            nn.Linear(hidden_size, 64),
+            nn.Linear(64, 64),
             nn.ReLU(),
             nn.Dropout(0.1),
             nn.Linear(64, self.num_classes),
