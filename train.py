@@ -22,12 +22,6 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
-try:
-    from torchmetrics.functional import accuracy
-except ImportError:
-    from pytorch_lightning.metrics.functional import accuracy
-
-    
 # For brevity, here is the simplest most minimal example with just a training
 # loop step, (no validation, no testing). It illustrates how you can use MLflow
 # to auto log parameters, metrics, and models.
@@ -37,6 +31,7 @@ class MNISTModel(pl.LightningModule):
     def __init__(self):
         super().__init__()
         self.l1 = torch.nn.Linear(28 * 28, 10)
+        self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=10)
 
     def forward(self, x):
         return torch.relu(self.l1(x.view(x.size(0), -1)))
@@ -46,7 +41,7 @@ class MNISTModel(pl.LightningModule):
         logits = self(x)
         loss = F.cross_entropy(logits, y)
         pred = logits.argmax(dim=1)
-        acc = accuracy(pred, y)
+        acc = self.accuracy(pred, y)
 
         # Use the current of PyTorch logger
         #self.log("train_loss", loss, on_epoch=True)
