@@ -45,8 +45,8 @@ class MNISTModel(pl.LightningModule):
         acc = self.accuracy(pred, y)
 
         # Use the current of PyTorch logger
-        #self.log("train_loss", loss, on_epoch=True)
-        #self.log("acc", acc, on_epoch=True)
+        self.log("train_loss", loss, on_epoch=True)
+        self.log("acc", acc, on_epoch=True)
         return loss
 
     def configure_optimizers(self):
