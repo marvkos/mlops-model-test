@@ -13,6 +13,8 @@
 
 #knn.score(X_test, y_test)
 
+import os
+
 import pytorch_lightning as pl
 import torch
 from torch.nn import functional as F
